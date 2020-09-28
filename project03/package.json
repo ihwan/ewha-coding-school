@@ -1,0 +1,16 @@
+{
+  "name": "project03",
+  "version": "1.0.0",
+  "description": "",
+  "main": "test01_querystring.js",
+  "dependencies": {},
+  "devDependencies": {
+    "querystring": "^0.2.0",
+    "url": "^0.11.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
