@@ -23,6 +23,11 @@ app.get('/hello', function (req, res) {
     res.render('hello', {message: messageArray[rand]});
 });
 
+app.get('/bts', function (req, res) {
+   
+    res.render('bts', {});
+});
+
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!');
 });
