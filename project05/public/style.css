@@ -1,0 +1,31 @@
+body {
+    background-color: #ddd;
+}
+
+
+body, html {
+    height: 100%;
+  }
+  
+
+.bg {
+    /* The image used */
+    background-image: url("bts.jpg");
+    
+    height: 300px;
+    
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.alert-warning {
+    margin: 15px 0;
+}
