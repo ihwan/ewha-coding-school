@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>블로그 포스트 상세</title>
+    </head>
+    <body>
+        <h1>블로그 포스트 상세</h1>
+        <p>제목: <%= data.title %></p>
+        <p>작성일: <%= data.inserted %></p>
+        <p>내용: <%= data.desc %></p>
+        <p>글쓴이: <%= data.author %></p>
+        
+        <a href="/">메인</a>
+        <a href="<%= data.id %>/edit">수정</a>
+        <a href="<%= data.id %>/delete">삭제</a>
+    </body>
+</html>
