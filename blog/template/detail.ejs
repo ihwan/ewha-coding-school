@@ -14,8 +14,16 @@
         <p><img src="/uploads/<%= data.upload %>" width="300"></p>
         <% } %>
         
-        <a href="/">메인</a>
-        <a href="<%= data.id %>/edit">수정</a>
-        <a href="<%= data.id %>/delete">삭제</a>
+        <div style="margin:30px 0">
+            <a href="/">메인</a>
+            <a href="<%= data.id %>/edit">수정</a>
+            <a href="<%= data.id %>/delete">삭제</a>
+        </div>
+
+        <form method="POST">
+            <p style="font-weight: bold;">댓글 남기기</p>
+            <textarea name="comment" cols="30" rows="4"></textarea>
+            <input type="submit" name="댓글쓰기">
+        </form>
     </body>
 </html>
