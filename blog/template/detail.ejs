@@ -9,6 +9,10 @@
         <p>작성일: <%= data.inserted %></p>
         <p>내용: <%= data.desc %></p>
         <p>글쓴이: <%= data.author %></p>
+
+        <% if (data.upload) { %>
+        <p><img src="/uploads/<%= data.upload %>" width="300"></p>
+        <% } %>
         
         <a href="/">메인</a>
         <a href="<%= data.id %>/edit">수정</a>

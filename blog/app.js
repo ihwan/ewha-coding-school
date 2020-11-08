@@ -10,6 +10,20 @@ app.set('views', './template');
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: false}));
 
+/* Upload */
+var multer = require('multer');
+var upload = multer({ dest: 'uploads/' })
+var _storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  }
+})
+var upload = multer({ storage: _storage })
+app.use('/uploads', express.static('uploads'));
+
 /* Mysql */
 var mysql = require('mysql');
 var conn = mysql.createConnection({
@@ -64,14 +78,15 @@ app.get('/add', function(req, res){
 });
 
 /* 블로그 글쓰기 버튼 누른후 */
-app.post('/add', function(req, res){
+app.post('/add', upload.single('upload'), function(req, res){
     console.log(req.body);
     var title = req.body.title;
     var desc = req.body.desc;
     var author = req.body.author;
+    var upload = req.file.filename;
 
-    var sql = 'INSERT INTO posts (`title`, `desc`, `author`, `inserted`) VALUES (?, ?, ?, now())';
-    conn.query(sql, [title, desc, author], function(err, result, fields){
+    var sql = 'INSERT INTO posts (`title`, `desc`, `author`, `upload`, `inserted`) VALUES (?, ?, ?, ?, now())';
+    conn.query(sql, [title, desc, author, upload], function(err, result, fields){
       if(err){
         console.log(err);
         res.status(500).send('Internal Server Error: ' + err);
@@ -88,7 +103,7 @@ app.post('/add', function(req, res){
 app.get('/:id', (req, res) => {
     var id = req.params.id;
     console.log("id -->" + id);
-    var sql = "SELECT `id`, `title`, `desc`, `author`, `inserted` FROM posts WHERE id = ?";
+    var sql = "SELECT `id`, `title`, `desc`, `author`, `upload`, `inserted` FROM posts WHERE id = ?";
 
     conn.query(sql, [id], function(err, result, fields){
         if(err){
@@ -140,7 +155,7 @@ app.post('/:id/delete', (req, res) => {
 app.get('/:id/edit', (req, res) => {
     var id = req.params.id;
     console.log("id -->" + id);
-    var sql = "SELECT `id`, `title`, `desc`, `author`, `inserted` FROM posts WHERE id = ?";
+    var sql = "SELECT `id`, `title`, `desc`, `author`, `upload`, `inserted` FROM posts WHERE id = ?";
 
     conn.query(sql, [id], function(err, result, fields){
         if(err){
@@ -155,14 +170,21 @@ app.get('/:id/edit', (req, res) => {
 });
 
 /* 수정 DB row UPDATE */
-app.post('/:id/edit', (req, res) => {
+app.post('/:id/edit', upload.single('upload'), (req, res) => {
     var id = req.params.id;
     var title = req.body.title;
     var desc = req.body.desc;
     var author = req.body.author;
+    
 
-    var sql = 'UPDATE posts SET title = ?, `desc`= ?, `author` = ?, `updated` = now() WHERE id = ?;';
-    var sqlParam = [title, desc, author, id]
+    if (typeof req.file !== 'undefined') {
+        var upload = req.file.filename;
+        var sql = 'UPDATE posts SET title = ?, `desc`= ?, `author` = ?, `upload` = ?, `updated` = now() WHERE id = ?;';
+        var sqlParam = [title, desc, author, upload, id];
+    } else {
+        var sql = 'UPDATE posts SET title = ?, `desc`= ?, `author` = ?, `updated` = now() WHERE id = ?;';
+        var sqlParam = [title, desc, author, id];
+    }
 
     conn.query(sql, sqlParam, function(err, result, fields){
       if(err){
