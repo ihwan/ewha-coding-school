@@ -2,6 +2,10 @@
 var express = require('express');
 var app = express();
 
+/* Moment */
+var moment = require('moment');
+app.locals.moment = require('moment');
+
 /* EJS 템플릿 사용설정 */
 app.set('view engine', 'ejs');
 app.set('views', './template');
@@ -34,6 +38,19 @@ var conn = mysql.createConnection({
 });
 conn.connect();
 
+/* Session */
+const session = require('express-session');
+app.use(session({
+  secret: '@#@$MYSIGN#@$#$',
+  resave: false,
+  saveUninitialized: true
+}));
+
+app.use(function(req, res, next) {
+  res.locals.user = req.session.user;
+  next();
+});
+
 /* 포트 리스닝 */
 app.listen(3000, function() {
     console.log("3000 port listening...");
@@ -60,16 +77,6 @@ app.get('/', function(req, res) {
 /* main 페이지 만들기 */
 app.get('/main', function(req, res) {
     res.render('main', {});
-});
-
-/* 로그인 페이지 만들기 */
-app.get('/login', function(req, res){
-    res.render('login', {});
-});
-
-/* 회원가입 페이지 만들기 */
-app.get('/signup', function(req, res){
-    res.render('signup', {});
 });
 
 /* 블로그 글쓰기 */
@@ -110,11 +117,42 @@ app.get('/:id', (req, res) => {
             console.log(err);
             res.status(500).send('Internal Server Error: ' + err);
         } else {
-            res.render('detail', {
-                data: result[0],
+
+            /* READ comment */
+            var commentSql = "SELECT * FROM blog.comment WHERE post_id = ? ";
+            conn.query(commentSql, [id], function(err, commentResult, fields){
+
+                console.log(commentResult);
+                if(err){
+                    console.log(err);
+                    res.status(500).send('Internal Server Error: ' + err);
+                } else {
+                    res.render('detail', {
+                        data: result[0],
+                        commentData: commentResult
+                    });
+                }
             });
         }
     });
+});
+
+/* 상세페이지 - POST write comment */
+app.post('/:id', function(req, res){
+    var postId = req.params.id;
+    var comment = req.body.comment;
+
+    var sql = 'INSERT INTO blog.comment(`post_id`, `comment`, `inserted`) VALUES (?, ?, now())';
+    conn.query(sql, [postId, comment], function(err, result, fields){
+      if(err){
+        console.log(err);
+        res.status(500).send('Internal Server Error: ' + err);
+
+      } else {
+        res.redirect('/' + postId);
+      }
+    });
+
 });
 
 /* 삭제확인 페이지 */
@@ -194,4 +232,8 @@ app.post('/:id/edit', upload.single('upload'), (req, res) => {
         res.redirect('/' + id);
       }
     });
-  });
+});
+
+/* account app */
+var account = require('./routes/account.js')(app, conn, upload);
+app.use('/account', account);

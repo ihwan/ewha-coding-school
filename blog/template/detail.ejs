@@ -5,25 +5,36 @@
     </head>
     <body>
         <h1>블로그 포스트 상세</h1>
-        <p>제목: <%= data.title %></p>
-        <p>작성일: <%= data.inserted %></p>
-        <p>내용: <%= data.desc %></p>
-        <p>글쓴이: <%= data.author %></p>
+        <% if(data) { %>
+            <p>제목: <%= data.title %></p>
+            <p>작성일: <%= moment(data.inserted).format('YYYY-MM-DD h:mm:ss a') %></p>
+            <p>내용: <%= data.desc %></p>
+            <p>글쓴이: <%= data.author %></p>
+            <% if (data.upload) { %>
+                <p><img src="/uploads/<%= data.upload %>" width="300"></p>
+            <% } %>
+            
+            <div style="margin:30px 0">
+                <a href="/">메인</a>
+                <a href="<%= data.id %>/edit">수정</a>
+                <a href="<%= data.id %>/delete">삭제</a>
+            </div>
 
-        <% if (data.upload) { %>
-        <p><img src="/uploads/<%= data.upload %>" width="300"></p>
+            <form method="POST">
+                <p style="font-weight: bold;">댓글 남기기</p>
+                <textarea name="comment" cols="30" rows="4"></textarea>
+                <input type="submit" name="댓글쓰기">
+            </form>
+
         <% } %>
-        
-        <div style="margin:30px 0">
-            <a href="/">메인</a>
-            <a href="<%= data.id %>/edit">수정</a>
-            <a href="<%= data.id %>/delete">삭제</a>
-        </div>
 
-        <form method="POST">
-            <p style="font-weight: bold;">댓글 남기기</p>
-            <textarea name="comment" cols="30" rows="4"></textarea>
-            <input type="submit" name="댓글쓰기">
-        </form>
+       
+        <% for(var i=0; i < commentData.length; i++) { %>
+            <p>
+                <%= commentData[i].comment %>
+                - 날짜: <%= moment(commentData[i].inserted).format('YYYY-MM-DD h:mm:ss a') %>
+            </p>
+        <% } %>
+
     </body>
 </html>
