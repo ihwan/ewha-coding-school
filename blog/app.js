@@ -72,8 +72,6 @@ app.get('/', function(req, res) {
     });
 });
 
-
-
 /* main 페이지 만들기 */
 app.get('/main', function(req, res) {
     res.render('main', {});
@@ -81,7 +79,17 @@ app.get('/main', function(req, res) {
 
 /* 블로그 글쓰기 */
 app.get('/add', function(req, res){
-    res.render('add', {});
+
+    console.log(req.session);
+
+    if (!req.session.user) {
+        console.log("Login required");
+        res.status(403).send("Login required");
+    } else {
+        res.render('add', {});
+    }
+
+    
 });
 
 /* 블로그 글쓰기 버튼 누른후 */

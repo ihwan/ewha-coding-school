@@ -17,13 +17,12 @@
         <% } %>
         
         <div>
-            <a href="/add">글쓰기</a>
-            <a href="/account/signup">회원가입</a>
-                
             <% if(locals.user) { %>
-                <%= locals.user.email %>
+                로그인 이메일: <%= locals.user.email %>
+                <a href="/add">글쓰기</a>
                 <a href="/account/logout">로그아웃</a>
             <% } else {%>
+                <a href="/account/signup">회원가입</a>
                 <a href="/account/login">로그인</a>
             <% } %>
         </div>
