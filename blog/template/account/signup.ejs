@@ -1,30 +1,38 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
   <head>
-    <meta charset="utf-8">
-    <title>회원가입</title>
+      <title>로그인</title>
+      <%- include('../partials/head') %>
   </head>
+  <body>
+    <%- include('../partials/navi') %>
 
-  <body class="text-center">
-
-    <form method="post">
-        <h1>회원가입</h1>
-        <p>
-            <label>이메일</label>
-            <input type="text" name="email">
-        </p>
-        <p>
-            <label>비밀번호</label>
-            <input type="password" name="password">
-        </p>
-        <p>
-            <label>이름</label>
-            <input type="text" name="username">
-        </p>
-        <p>
-            <input type="submit" value="가입하기">
-        </p>
-    </form>
-
+    <div class="py-5">
+      <div class="container">
+        <div class="row">
+            <div class="col-sm-4">
+              <form method="post">
+                <h1>회원가입</h1>
+                <div class="form-group">
+                    <label for="id_email">이메일</label>
+                    <input id="id_email" type="text" name="email" class="form-control" >
+                </div>
+                <div class="form-group">
+                    <label for="id_password">비밀번호</label>
+                    <input id="id_password" type="password" name="password"  class="form-control" >
+                </div>
+                <div class="form-group">
+                    <label for="id_username">이름</label>
+                    <input id="id_username" type="text" name="username" class="form-control" >
+                </div>
+                
+                <button type="submit" class="btn btn-primary">가입하기</button>
+              
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

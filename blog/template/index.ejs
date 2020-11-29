@@ -1,30 +1,49 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>블로그 메인</title>
+        <title>나의 블로그 메인</title>
+        <%- include('partials/head') %>
     </head>
     <body>
-        <h1>블로그 메인</h1>
-        
-        <% if (data.length>0) { %>
-            <ul class="list-unstyled">
-              <% for(var i=0; i < data.length; i++) { %>
-              <li>
-                  <a href="<%= data[i].id %>"><%= data[i].title %></a> - <%= data[i].author %>
-              </li>
-              <% } %>
-            </ul>
-        <% } %>
-        
-        <div>
-            <% if(locals.user) { %>
-                로그인 이메일: <%= locals.user.email %>
-                <a href="/add">글쓰기</a>
-                <a href="/account/logout">로그아웃</a>
-            <% } else {%>
-                <a href="/account/signup">회원가입</a>
-                <a href="/account/login">로그인</a>
-            <% } %>
+        <%- include('partials/navi') %>
+        <div class="jumbotron">
+            <h1 class="display-4">Hello, world!</h1>
+            <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+            <hr class="my-4">
+            <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+            <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
         </div>
+
+        <div class="py-5">
+            <div class="container">
+                <div class="row">
+                    <% if (data.length>0) { %>
+                        <% for(var i=0; i < data.length; i++) { %>
+                            <div class="col-md-4">
+                                
+                                <div class="card mb-4 shadow-sm">
+                                    <% if (data[i].upload) { %>
+                                        <img src="/uploads/<%= data[i].upload %>" width="100%" style="min-height: 180px">
+                                    <% } else { %>
+                                        <svg class="bd-placeholder-img card-img-top" style="text-anchor: middle;" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: No Image"><title>Placeholder</title><rect width="100%" height="100%" fill="#868e96"></rect><text x="50%" y="50%" fill="#dee2e6" dy=".3em">No Image</text></svg>
+                                    <% } %>
+                                    <div class="card-body">
+                                        <p class="card-text">
+                                            <a href="<%= data[i].id %>" class="stretched-link"><%= data[i].title %></a>
+                                        </p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <small class="text-muted"><%= data[i].author %></small>
+                                            <small class="text-muted"><%= moment(data[i].inserted).format('YYYY.MM.DD') %></small>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } %>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+        <%- include('partials/footer') %>
     </body>
 </html>

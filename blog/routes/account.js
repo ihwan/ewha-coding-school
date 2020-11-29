@@ -32,6 +32,7 @@ module.exports = function(app, conn){
             } else {
               req.session.user = {
                 'email': result[0].email,
+                'username': result[0].username
               }
               res.redirect('/');
             }

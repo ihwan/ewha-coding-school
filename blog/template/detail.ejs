@@ -1,40 +1,83 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>블로그 포스트 상세</title>
+        <title>나의 블로그 메인</title>
+        <%- include('partials/head') %>
     </head>
     <body>
-        <h1>블로그 포스트 상세</h1>
-        <% if(data) { %>
-            <p>제목: <%= data.title %></p>
-            <p>작성일: <%= moment(data.inserted).format('YYYY-MM-DD h:mm:ss a') %></p>
-            <p>내용: <%= data.desc %></p>
-            <p>글쓴이: <%= data.author %></p>
-            <% if (data.upload) { %>
-                <p><img src="/uploads/<%= data.upload %>" width="300"></p>
-            <% } %>
-            
-            <div style="margin:30px 0">
-                <a href="/">메인</a>
-                <a href="<%= data.id %>/edit">수정</a>
-                <a href="<%= data.id %>/delete">삭제</a>
+        <%- include('partials/navi') %>
+        <div class="py-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-8">
+                    <% if(data) { %>
+                        
+                            <h1><%= data.title %></h1>
+                            <p class="border-bottom">
+                                <small>
+                                작성일: <%= moment(data.inserted).format('YYYY-MM-DD h:mm:ss a') %>
+                                / 작성자: <%= data.author %>
+                            </small>
+                            </p>
+                            <% if (data.upload) { %>
+                                <p><img src="/uploads/<%= data.upload %>" class="img-fluid"></p>
+                            <% } %>
+
+                            <p class="desc-pre-wrap"><%= data.desc %></p>
+                            
+                            <ul class="nav justify-content-end">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="<%= data.id %>/edit">
+                                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pen" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M13.498.795l.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"/>
+                                        </svg>
+                                        수정
+                                    </a>
+                                </li>
+                                
+                                <li class="nav-item">
+                                    <a class="nav-link" href="<%= data.id %>/delete">
+                                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                        </svg>
+                                        삭제
+                                    </a>
+                                </li>
+                            </ul>                           
+                    <% } %>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <form method="POST">
+                                <label name="comment" for="cmt">댓글 남기기</label>
+                                <textarea name="comment" class="form-control" id="cmt" rows="3"></textarea>
+                                <button type="submit" class="mt-1 btn btn-sm btn-primary btn-block">댓글쓰기</button>
+                            </form>
+                        </div>
+                        <% if (commentData.length > 0) { %>
+                            <ul class="list-group list-group-flush">
+                            <% for(var i=0; i < commentData.length; i++) { %>
+                                <li class="list-group-item">
+                                    <p><%= commentData[i].comment %></p>
+                                    <p class="text-right"><small class=""><%= moment(commentData[i].inserted).format('YYYY-MM-DD h:mm:ss a') %></small></p>
+                                </li>
+                            <% } %>
+                            </ul>
+                        <% } else { %>
+                            <p>처음으로 댓글을 남겨주세요.
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-emoji-smile" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                    <path fill-rule="evenodd" d="M4.285 9.567a.5.5 0 0 1 .683.183A3.498 3.498 0 0 0 8 11.5a3.498 3.498 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.498 4.498 0 0 1 8 12.5a4.498 4.498 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683z"/>
+                                    <path d="M7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zm4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5z"/>
+                                </svg>
+                            </p>
+                        <% } %>
+
+                    </div>
+                </div>
             </div>
-
-            <form method="POST">
-                <p style="font-weight: bold;">댓글 남기기</p>
-                <textarea name="comment" cols="30" rows="4"></textarea>
-                <input type="submit" name="댓글쓰기">
-            </form>
-
-        <% } %>
-
-       
-        <% for(var i=0; i < commentData.length; i++) { %>
-            <p>
-                <%= commentData[i].comment %>
-                - 날짜: <%= moment(commentData[i].inserted).format('YYYY-MM-DD h:mm:ss a') %>
-            </p>
-        <% } %>
-
+        </div>
+        <%- include('partials/footer') %>
     </body>
 </html>

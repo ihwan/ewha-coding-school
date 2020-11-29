@@ -1,0 +1,27 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">My Blog</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/">홈</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="https://section.blog.naver.com/" target="_blank">네이버 블로그</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav mr-right">
+      <% if(locals.user) { %>
+        <li><a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">안녕하세요. <%= locals.user.username %>님</a></li>
+        <li><a class="nav-link" href="/add">글쓰기</a></li>
+        <li><a class="nav-link" href="/account/logout">로그아웃</a></li>
+      <% } else {%>
+        <li><a class="nav-link" href="/account/signup">회원가입</a></li>
+        <li><a class="nav-link" href="/account/login">로그인</a></li>
+      <% } %>
+    </ul>
+  </div>
+</nav>

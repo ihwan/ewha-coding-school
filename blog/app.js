@@ -2,6 +2,9 @@
 var express = require('express');
 var app = express();
 
+/* Public */
+app.use(express.static('public'));
+
 /* Moment */
 var moment = require('moment');
 app.locals.moment = require('moment');
@@ -58,7 +61,7 @@ app.listen(3000, function() {
 
 /* 첫페이지 만들기 */
 app.get('/', function(req, res) {
-    var sql = "SELECT `id`, `title`, `desc`, `author`, `inserted` FROM posts";
+    var sql = "SELECT `id`, `title`, `desc`, `author`, `inserted`, `upload` FROM posts ORDER BY `id` DESC";
 
     conn.query(sql, [], function(err, result, fields){
         if(err){
@@ -88,8 +91,6 @@ app.get('/add', function(req, res){
     } else {
         res.render('add', {});
     }
-
-    
 });
 
 /* 블로그 글쓰기 버튼 누른후 */

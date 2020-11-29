@@ -1,18 +1,28 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>블로그 포스트 삭제확인</title>
+        <title>블로그 글 삭제</title>
+        <%- include('partials/head') %>
     </head>
     <body>
-        <h1>블로그 포스트 삭제확인</h1>
-        <p>제목: <%= data.title %></p>
-        <p>작성일: <%= data.inserted %></p>
+        <%- include('partials/navi') %>
 
-        <p>삭제하시겠습니까?</p>
-        <form method="post">
-            <input type="submit" value="삭제하기">
-        </form>
+        <div class="py-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-8">
+
+                    <h1>다음 글을 삭제하시겠습니까?</h1>
+                    <p>제목: <%= data.title %></p>
+                    <p>작성일: <%= moment(data.inserted).format('YYYY-MM-DD h:mm:ss a') %></p>
+
+                    <form method="post">
+                        <button class="btn btn-danger">삭제하기</button>
+                        <a href="/" class="btn btn-muted">취소</a>
+                    </form>
+                </div>
+            </div>
+        </div>
         
-        <p><a href="/">메인</a></p>
     </body>
 </html>
