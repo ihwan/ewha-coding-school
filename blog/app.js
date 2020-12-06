@@ -1,3 +1,6 @@
+/* 환경 설정 */
+require('dotenv').config()
+
 /* Express 사용 설정 */
 var express = require('express');
 var app = express();
@@ -34,10 +37,10 @@ app.use('/uploads', express.static('uploads'));
 /* Mysql */
 var mysql = require('mysql');
 var conn = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'mysql1234',
-    database: 'blog'
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE
 });
 conn.connect();
 
@@ -55,8 +58,9 @@ app.use(function(req, res, next) {
 });
 
 /* 포트 리스닝 */
+var port = process.env.PORT || 3000;
 app.listen(3000, function() {
-    console.log("3000 port listening...");
+    console.log(port + " port listening...");
 });
 
 /* 첫페이지 만들기 */
@@ -223,7 +227,6 @@ app.post('/:id/edit', upload.single('upload'), (req, res) => {
     var desc = req.body.desc;
     var author = req.body.author;
     
-
     if (typeof req.file !== 'undefined') {
         var upload = req.file.filename;
         var sql = 'UPDATE posts SET title = ?, `desc`= ?, `author` = ?, `upload` = ?, `updated` = now() WHERE id = ?;';
