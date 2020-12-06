@@ -1,5 +1,7 @@
 CREATE SCHEMA `blog`;
 
+USE `blog`;
+
 CREATE TABLE `comment` (
   `id` int NOT NULL AUTO_INCREMENT,
   `post_id` int NOT NULL,

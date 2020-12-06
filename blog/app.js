@@ -59,7 +59,7 @@ app.use(function(req, res, next) {
 
 /* 포트 리스닝 */
 var port = process.env.PORT || 3000;
-app.listen(3000, function() {
+app.listen(port, function() {
     console.log(port + " port listening...");
 });
 
